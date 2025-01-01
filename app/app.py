@@ -7,6 +7,8 @@ import openai
 from PIL import Image
 from io import BytesIO
 import tempfile  # For handling temporary files
+import pandas as pd  # For handling CSV and Excel files
+
 
 # Load environment variables and set the OpenAI API key
 load_dotenv()
@@ -28,14 +30,34 @@ def base64_to_image(base64_string):
 
 
 # Function to handle file upload and processing
-def handle_file_processing(uploaded_file, file_name):
-    path_to_save = os.path.join(
-        tempfile.gettempdir(), file_name
-    )  # Save file in temp directory
-    with open(path_to_save, "wb") as f:
-        f.write(uploaded_file.getvalue())
+# def handle_file_processing(uploaded_file, file_name):
+#     path_to_save = os.path.join(
+#         tempfile.gettempdir(), file_name
+#     )  # Save file in temp directory
+#     with open(path_to_save, "wb") as f:
+#         f.write(uploaded_file.getvalue())
 
-    return path_to_save
+#     return path_to_save
+
+def handle_file_processing(uploaded_file):
+    file_extension = uploaded_file.name.split('.')[-1].lower()
+    if file_extension in ['csv', 'xlsx']:
+        if file_extension == 'csv':
+            df = pd.read_csv(uploaded_file)
+        else:
+            df = pd.read_excel(uploaded_file)
+        
+        # Save dataframe to a temporary file
+        temp_path = os.path.join(tempfile.gettempdir(), uploaded_file.name)
+        if file_extension == 'csv':
+            df.to_csv(temp_path, index=False)
+        else:
+            df.to_excel(temp_path, index=False)
+        
+        return temp_path
+    else:
+        st.error("Unsupported file format.")
+        return None
 
 
 # Dedicated function for summarization
@@ -82,17 +104,17 @@ def generate_query_based_graph(file_path, query):
 
 if menu == "Summarize":
     st.subheader("Summarization of your Data")
-    file_uploader = st.file_uploader("Upload your CSV", type="csv")
+    file_uploader = st.file_uploader("Upload your CSV", type=["csv", "xlsx"])
     if file_uploader is not None:
-        file_path = handle_file_processing(file_uploader, "summarize_filename.csv")
+        file_path = handle_file_processing(file_uploader)
         summarize_data(file_path)
 
 # Choice for 'Question based Graph'
 if menu == "Question based Graph":
     st.subheader("Query your Data to Generate Graph")
-    file_uploader = st.file_uploader("Upload your CSV", type="csv")
+    file_uploader = st.file_uploader("Upload your CSV", type=["csv", "xlsx"])
     text_area = st.text_area("Enter your query here:", height=200)
     if st.button("Generate Graph") and file_uploader and text_area:
-        file_path = handle_file_processing(file_uploader, "query_filename.csv")
+        file_path = handle_file_processing(file_uploader)
         generate_query_based_graph(file_path, text_area)
         os.remove(file_path)
