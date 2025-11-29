@@ -1,8 +1,0 @@
-streamlit
-python-dotenv
-openai
-Pillow
-lida
-seaborn
-matplotlib
-openpyxl
