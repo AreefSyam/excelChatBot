@@ -69,31 +69,6 @@ A Streamlit-based data visualization application that uses AI (OpenAI + LIDA) to
    http://localhost:8501
    ```
 
-## 🐳 Docker Installation & Running
-
-1. **Build the Docker image:**
-
-   ```bash
-   docker build -t excelchatbot:latest .
-   ```
-
-2. **Run the container:**
-
-   ```bash
-   docker run --rm --env-file .env -p 8501:8501 excelchatbot:latest
-   ```
-
-   Or, pass the API key directly:
-
-   ```bash
-   docker run --rm -e OPENAI_API_KEY="sk-your-api-key" -p 8501:8501 excelchatbot:latest
-   ```
-
-3. **Access the app:**
-   ```
-   http://localhost:8501
-   ```
-
 ## 📖 Usage
 
 ### Summarize Mode
