@@ -44,7 +44,7 @@ A Streamlit-based data visualization application that uses AI (OpenAI + LIDA) to
 
 4. **Set up environment variables:**
 
-   Create a `.env` file in the project root (or in the `app/` folder if using the old structure):
+   Create a `.env` file in the project root:
 
    ```env
    OPENAI_API_KEY=sk-your-openai-api-key-here
@@ -155,6 +155,7 @@ See `requirements.txt` for exact versions.
 
 - These are in `requirements.txt` and should be installed automatically
 - If missing: `pip install seaborn matplotlib openpyxl`
+  ß
 
 ### OpenAI Error 429 (insufficient_quota)
 
