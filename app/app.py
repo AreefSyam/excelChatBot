@@ -90,6 +90,12 @@ def generate_query_based_graph(file_path, query):
 
     st.info(f"Your Query: {query}")
 
+    # If OPENAI_API_KEY is not set, skip LLM calls and use the local fallback directly.
+    if not openai_api_key:
+        st.warning("OPENAI_API_KEY not set — skipping LLM and using local plotting fallback.")
+        _local_monthly_barchart(file_path)
+        return
+
     # Try LIDA/LLM-driven visualization first; fall back to local plotting on error
     try:
         # LIDA summary
