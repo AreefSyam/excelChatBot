@@ -9,7 +9,6 @@ from io import BytesIO
 import tempfile  # For handling temporary files
 import pandas as pd  # For handling CSV and Excel files
 
-
 # Load environment variables and set the OpenAI API key
 load_dotenv()
 openai_api_key = os.getenv("OPENAI_API_KEY")
@@ -27,17 +26,6 @@ menu = st.sidebar.selectbox("Choose an Option", ["Summarize", "Question based Gr
 def base64_to_image(base64_string):
     byte_data = base64.b64decode(base64_string)
     return Image.open(BytesIO(byte_data))
-
-
-# Function to handle file upload and processing
-# def handle_file_processing(uploaded_file, file_name):
-#     path_to_save = os.path.join(
-#         tempfile.gettempdir(), file_name
-#     )  # Save file in temp directory
-#     with open(path_to_save, "wb") as f:
-#         f.write(uploaded_file.getvalue())
-
-#     return path_to_save
 
 def handle_file_processing(uploaded_file):
     file_extension = uploaded_file.name.split('.')[-1].lower()
